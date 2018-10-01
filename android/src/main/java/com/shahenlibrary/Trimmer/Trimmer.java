@@ -494,24 +494,32 @@ public class Trimmer {
     final File tempFile = createTempFile("mp4", promise, ctx);
 
     ArrayList<String> cmd = new ArrayList<String>();
+    cmd.add("-hwaccel"); //add param
+    cmd.add("auto");//add param
+    cmd.add("-threads");
+    cmd.add("6");
+
     cmd.add("-y");
     cmd.add("-i");
     cmd.add(source);
     cmd.add("-c:v");
-    cmd.add("libx264");
+    cmd.add("copy");
     cmd.add("-b:v");
     cmd.add(Double.toString(averageBitrate/1000)+"K");
     cmd.add("-bufsize");
     cmd.add(Double.toString(averageBitrate/2000)+"K");
-    if ( width != 0 && height != 0 ) {
-      cmd.add("-vf");
-      cmd.add("scale=" + Integer.toString(width) + ":" + Integer.toString(height));
-    }
+//    if ( width != 0 && height != 0 ) {
+//      cmd.add("-vf");
+//      cmd.add("scale=" + Integer.toString(width) + ":" + Integer.toString(height));
+//    }
 
     cmd.add("-preset");
     cmd.add("ultrafast");
     cmd.add("-pix_fmt");
     cmd.add("yuv420p");
+
+    cmd.add("-crf");
+    cmd.add("28");
 
     if (removeAudio) {
       cmd.add("-an");
